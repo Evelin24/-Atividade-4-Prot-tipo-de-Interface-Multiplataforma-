@@ -111,14 +111,12 @@
         ======================= */
         .dashboard {
             display: grid;
-            grid-template-columns: 240px 1fr 300px;
+            grid-template-columns: minmax(70px,240px) 1fr minmax(250px,300px);
             gap: 24px;
             padding: 24px;
             max-width: 1600px;
             margin: 0 auto;
-            transition: grid-template-columns 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
         /* Classe que o JavaScript vai aplicar no container pai */
         .dashboard.menu-collapsed {
             grid-template-columns: 70px 1fr 300px;
@@ -189,6 +187,8 @@
             padding-top: 15px;
             color: #94A3B8;
         }
+
+        
 
         /* ====================================
            COMPORTAMENTO DO MENU RECOLHIDO
@@ -341,7 +341,7 @@
         ======================= */
         .subjects-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 16px;
         }
 
@@ -427,9 +427,9 @@
         /* =======================
            MINHAS ATIVIDADES E FÓRUM
         ======================= */
-        .bottom-row {
+       .bottom-row {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 16px;
         }
 
@@ -465,11 +465,13 @@
             font-size: 11px;
         }
 
-        .communities-box {
+       .communities-box {
             display: flex;
             gap: 10px;
             margin-top: 10px;
+            flex-wrap: wrap;
         }
+
         .community-tag {
             background: #EFF6FF;
             color: #253D90;
@@ -669,6 +671,110 @@
             align-items: center;
             gap: 8px;
         }
+
+        @media (max-width: 1200px) {
+
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .right-column {
+        order: 2;
+    }
+
+    .main-content {
+        order: 1;
+    }
+
+    .support-bar {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+}
+@media (max-width: 1200px) {
+
+    .dashboard {
+        grid-template-columns: 70px 1fr;
+    }
+
+    .right-column {
+        display: none;
+    }
+
+    .sidebar {
+        position: relative;
+        top: 0;
+        height: auto;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .topbar {
+        flex-direction: column;
+        height: auto;
+        padding: 15px;
+        gap: 10px;
+    }
+
+    .topbar-left,
+    .topbar-right {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .topbar-logo span {
+        display: none;
+    }
+
+    .dashboard {
+        grid-template-columns: 1fr;
+        padding: 12px;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    .notice-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .subjects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .bottom-row {
+        grid-template-columns: 1fr;
+    }
+
+    .integralization-box {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .communities-box {
+        flex-wrap: wrap;
+    }
+
+    .support-bar {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+}
 
     </style>
 </head>
