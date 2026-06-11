@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UFSB | SIGAA - Login</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* VIEWPORT FIXA SEM ROLAGEM */
+        body {
+            background-color: #EAF0F6; 
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden; 
+            padding: 20px;
+        }
+
+        /* O GRANDE CONTAINER DO PROTÓTIPO */
+        .portal-grand-container {
+            width: 100%;
+            max-width: 1024px; 
+            background-color: #FFFFFF; 
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 1. HEADER INSTITUCIONAL */
+        .main-header {
+            background-color: #1A3178; 
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .college-logo-area img {
+            height: 52px; 
+            display: block;
+        }
+
+        .header-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .header-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .header-links a img {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* 2. BANNER DE ATENÇÃO */
+        .attention-banner {
+            background-color: #FFFDF0; 
+            border: 1px solid #FFE58F;
+            border-radius: 20px; 
+            margin: 20px 30px 10px 30px;
+            padding: 12px 25px;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            color: #1F2937;
+        }
+
+        .attention-banner strong {
+            color: #FF4D4F; 
+            margin-right: 5px;
+        }
+/* CONTAINER DOS 6 SISTEMAS */
+.systems-row {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    padding: 10px 30px;
+    width: 100%;
+}
+
+/* CARD */
+.system-box {
+    background: #FFFFFF;
+    border-radius: 12px;
+    border: 1px solid #E2E8F0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 12px 10px;
+    min-height: 170px;
+}
+
+/* Faixas coloridas */
+.system-box:nth-child(1) { border-top: 4px solid #1A3178; }
+.system-box:nth-child(2) { border-top: 4px solid #389E0D; }
+.system-box:nth-child(3) { border-top: 4px solid #722ED1; }
+.system-box:nth-child(4) { border-top: 4px solid #FA8C16; }
+.system-box:nth-child(5) { border-top: 4px solid #13C2C2; }
+.system-box:nth-child(6) { border-top: 4px solid #FFC107; }
+
+/* ÍCONE */
+.system-image-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 8px;
+}
+
+.system-image-wrapper img {
+    width: 58px;
+    height: 58px;
+    object-fit: contain;
+}
+
+/* BOTÃO */
+.system-box .btn-sigaa-access {
+    width: 100%;
+    margin-top: auto;
+
+    background: #FFFFFF;
+    border: 1px solid #CBD5E0;
+
+    color: #1A3178;
+    font-size: 0.85rem;
+    font-weight: bold;
+
+    padding: 7px 0;
+    border-radius: 6px;
+
+    cursor: pointer;
+}
+
+.system-title{
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1A3178;
+    line-height: 1;
+}
+
+.system-subtitle{
+    font-size: 0.75rem;
+    color: #1A3178;
+    margin-bottom: auto;
+}
+
+        /* 4. BASE INTERNA (LOGIN E CADASTROS) */
+        .bottom-layout {
+            display: grid;
+            grid-template-columns: 1.35fr 1fr; 
+            gap: 20px;
+            padding: 10px 30px 25px 30px;
+        }
+
+        /* Bloco de Login Esquerdo */
+        .login-card {
+            background: #FFFFFF;
+            border-radius: 12px;
+            padding: 25px 40px;
+            border: 1px solid #E2E8F0;
+            text-align: center;
+        }
+
+        .login-title-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #1A3178;
+            margin-bottom: 4px;
+        }
+
+        .login-title-area img {
+            width: 16px;
+            height: 16px;
+        }
+
+        .login-card h3 {
+            font-size: 1.05rem;
+            font-weight: bold;
+        }
+
+        .login-card .subtitle {
+            font-size: 0.75rem;
+            color: #4B5563;
+            margin-bottom: 18px;
+        }
+
+        /* Inputs altos e limpos */
+        .input-container {
+            background-color: #EBF2FA; 
+            border-radius: 10px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+        }
+
+        .input-container img {
+            width: 18px;
+            height: 18px;
+        }
+
+        .input-container input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            padding: 12px 10px;
+            font-size: 0.9rem;
+            color: #1F2937;
+            outline: none;
+        }
+
+        .remember-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: #4B5563;
+            margin: 12px 0;
+            cursor: pointer;
+        }
+
+        /* Botão ENTRAR Robusto e Suave */
+        .btn-blue-submit {
+            width: 100%;
+            background-color: #243D80;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px; 
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Bloco de Cadastros Direito */
+        .onboarding-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .onboarding-box {
+            background: #FFFFFF;
+            border-radius: 12px;
+            border: 1px solid #E2E8F0;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+        }
+
+        .onboarding-image-space img {
+            width: 32px;
+            height: 32px;
+            display: block;
+        }
+
+        .onboarding-text {
+            flex: 1;
+        }
+
+        .onboarding-text h4 {
+            font-size: 0.95rem;
+            color: #1A3178;
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+
+        .onboarding-text p {
+            font-size: 0.7rem;
+            color: #4B5563;
+            line-height: 1.3;
+            margin-bottom: 8px;
+        }
+
+        .btn-oval-register {
+            background: #FFFFFF;
+            border: 1px solid #CBD5E0;
+            padding: 5px 20px;
+            border-radius: 6px; 
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #243D80;
+            cursor: pointer;
+        }
+
+        /* 5. RODAPÉ INSTITUCIONAL */
+        .portal-footer {
+            background-color: #1A3178;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="portal-grand-container">
+        
+        <header class="main-header">
+            <div class="college-logo-area">
+                <img src="images/logo.png" alt="UFSB SIGAA">
+            </div>
+            <nav class="header-links">
+                <a href="#"><img src="images/ajuda.png" alt=""> Ajuda</a>
+                <a href="#"><img src="images/suporte.png" alt=""> Suporte</a>
+            </nav>
+        </header>
+
+        <div class="attention-banner">
+            <strong>ATENÇÃO!</strong> O sistema diferencia letras maiúsculas e minúsculas APENAS na senha, portanto ela deve ser digitada da mesma maneira que no cadastro.
+        </div>
+
+
+
+
+ <section class="systems-row">
+
+    <div class="system-box">
+        <div class="system-image-wrapper">
+            <img src="images/academico.png" alt="SIGAA">
+        </div>
+
+        <h3 class="system-title">SIGAA</h3>
+        <span class="system-subtitle">Acadêmico</span>
+
+        <button class="btn-sigaa-access">ACESSAR</button>
+    </div>
+
+    <div class="system-box">
+        <div class="system-image-wrapper">
+            <img src="images/sipacadm.png" alt="SIPAC">
+        </div>
+
+        <h3 class="system-title">SIPAC</h3>
+        <span class="system-subtitle">Administrativo</span>
+
+        <button class="btn-sigaa-access">ACESSAR</button>
+    </div>
+
+    <div class="system-box">
+        <div class="system-image-wrapper">
+            <img src="images/sisrh.png" alt="SIGRH">
+        </div>
+
+        <h3 class="system-title">SIGRH</h3>
+        <span class="system-subtitle">Recursos Humanos</span>
+
+        <button class="btn-sigaa-access">ACESSAR</button>
+    </div>
+
+    <div class="system-box">
+        <div class="system-image-wrapper">
+            <img src="images/sigeventos.png" alt="SIGEventos">
+        </div>
+
+        <h3 class="system-title">SIGEventos</h3>
+        <span class="system-subtitle">Gestão de Eventos</span>
+
+        <button class="btn-sigaa-access">ACESSAR</button>
+    </div>
+
+    <div class="system-box">
+        <div class="system-image-wrapper">
+            <img src="images/sigadm.png" alt="SIGAdm">
+        </div>
+
+        <h3 class="system-title">SIGAdm</h3>
+        <span class="system-subtitle">Gestão de Eventos</span>
+
+        <button class="btn-sigaa-access">ACESSAR</button>
+    </div>
+
+    <div class="system-box">
+        <div class="system-image-wrapper">
+            <img src="images/sigaeleicoes.png" alt="SIGEleições">
+        </div>
+
+        <h3 class="system-title">SIGEleições</h3>
+        <span class="system-subtitle">Processos Eleitorais</span>
+
+        <button class="btn-sigaa-access">ACESSAR</button>
+    </div>
+
+</section>
+
+
+<div class="bottom-layout">
+
+    <main class="login-card">
+
+        <div class="login-title-area">
+            <img src="images/cadeado.png" alt="">
+            <h3>Entrar no sistema</h3>
+        </div>
+
+        <p class="subtitle">
+            Informe suas credenciais para acessar o sistema
+        </p>
+
+        <form action="telainicial.html">
+
+            <div class="input-container">
+                <img src="images/usuario.png" alt="">
+                <input type="text" placeholder="Usuário" required>
+            </div>
+
+            <div class="input-container">
+                <img src="images/senha.png" alt="">
+                <input type="password" placeholder="Senha" required>
+            </div>
+
+            <label class="remember-checkbox">
+                <input type="checkbox">
+                Lembrar meu usuário
+            </label>
+
+            <button type="submit" class="btn-blue-submit">
+                ENTRAR
+            </button>
+
+        </form>
+
+    </main>
+
+    <section class="onboarding-stack">
+
+        <div class="onboarding-box">
+
+            <div class="onboarding-image-space">
+                <img src="images/aluno.png" alt="">
+            </div>
+
+            <div class="onboarding-text">
+                <h4>Aluno</h4>
+
+                <p>
+                    Caso ainda não possua cadastro no Sigaa Clique no Link e cadastre-se
+                </p>
+
+                <button class="btn-oval-register">
+                    Cadastre-se
+                </button>
+            </div>
+
+        </div>
+
+        <div class="onboarding-box">
+
+            <div class="onboarding-image-space">
+                <img src="images/familiares.png" alt="">
+            </div>
+
+            <div class="onboarding-text">
+                <h4>Familiares</h4>
+
+                <p>
+                    Caso ainda não possua cadastro no Sigaa Clique no Link e cadastre-se
+                </p>
+
+                <button class="btn-oval-register">
+                    Cadastre-se
+                </button>
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+
+        <footer class="portal-footer">
+            2026 - Universidade Federal do Sul da Bahia - UFSB | Todos os direitos reservados
+        </footer>
+
+    </div>
+
+</body>
+</html>

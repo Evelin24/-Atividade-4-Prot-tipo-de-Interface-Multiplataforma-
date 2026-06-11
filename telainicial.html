@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UFSB - SIGAA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        }
+
+        body {
+            background: #F4F7FC;
+            color: #334155;
+            transition: all 0.3s ease;
+        }
+
+        /* =======================
+           HEADER
+        ======================= */
+        .topbar {
+            height: 65px;
+            background: #253D90;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .topbar-left .fa-bars {
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .topbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .topbar-logo h2 {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .topbar-logo span {
+            font-size: 12px;
+            opacity: 0.9;
+            border-left: 1px solid rgba(255,255,255,0.3);
+            padding-left: 12px;
+            display: inline-block;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 14px;
+        }
+
+        .topbar-right i {
+            font-size: 18px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .topbar-right i::after {
+            content: '3';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #EF4444;
+            color: white;
+            font-size: 10px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: sans-serif;
+        }
+
+        .topbar-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        /* =======================
+           LAYOUT PRINCIPAL (Com transição para o colapso)
+        ======================= */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 240px 1fr 300px;
+            gap: 24px;
+            padding: 24px;
+            max-width: 1600px;
+            margin: 0 auto;
+            transition: grid-template-columns 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Classe que o JavaScript vai aplicar no container pai */
+        .dashboard.menu-collapsed {
+            grid-template-columns: 70px 1fr 300px;
+        }
+
+        /* =======================
+           MENU LATERAL (SIDEBAR)
+        ======================= */
+        .sidebar {
+            background: #fff;
+            border-radius: 16px;
+            padding: 16px 8px; /* Ajustado para acomodar os itens compactos */
+            height: calc(100vh - 113px);
+            position: sticky;
+            top: 89px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            border: 1px solid #E2E8F0;
+            transition: all 0.3s ease;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #475569;
+            font-size: 14px;
+            margin-bottom: 4px;
+            transition: all 0.2s ease, padding 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .menu-item i {
+            width: 16px;
+            text-align: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .menu-item:hover {
+            background: #F1F5F9;
+            color: #253D90;
+        }
+
+        .menu-item.active {
+            background: #EFF6FF;
+            color: #253D90;
+            font-weight: 600;
+        }
+
+        .menu-title {
+            color: #94A3B8;
+            font-size: 11px;
+            font-weight: 700;
+            margin: 16px 0 8px 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: opacity 0.2s ease;
+        }
+
+        /* Botão recolher menu */
+        .collapse-btn {
+            margin-top: 20px;
+            border-top: 1px solid #F1F5F9;
+            padding-top: 15px;
+            color: #94A3B8;
+        }
+
+        /* ====================================
+           COMPORTAMENTO DO MENU RECOLHIDO
+        ==================================== */
+        .dashboard.menu-collapsed .sidebar {
+            padding: 16px 6px;
+        }
+
+        /* Esconde os textos dos links e os títulos das categorias */
+        .dashboard.menu-collapsed .menu-item span,
+        .dashboard.menu-collapsed .menu-title,
+        .dashboard.menu-collapsed .collapse-btn span {
+            display: none;
+        }
+
+        /* Centraliza os ícones quando estiver recolhido */
+        .dashboard.menu-collapsed .menu-item {
+            justify-content: center;
+            padding: 10px 0;
+            gap: 0;
+        }
+
+        /* Inverte a setinha do botão de recolher */
+        .dashboard.menu-collapsed .collapse-btn i {
+            transform: rotate(180deg);
+            transition: transform 0.3s ease;
+        }
+
+        /* =======================
+           CONTEÚDO CENTRAL
+        ======================= */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .welcome-card h1 {
+            font-size: 24px;
+            color: #1E293B;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .welcome-card p {
+            color: #64748B;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        /* CARDS PADRÃO */
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #E2E8F0;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-header h3 {
+            color: #1E293B;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .card-header a {
+            text-decoration: none;
+            color: #253D90;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* =======================
+           AVISOS E PRAZOS
+        ======================= */
+        .notice-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .notice-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px;
+            border: 1px solid #F1F5F9;
+            border-radius: 12px;
+            background: #FAFAFA;
+        }
+
+        .notice-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .notice-icon-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .notice-item.prazo .notice-icon-box { background: #FEF2F2; color: #EF4444; }
+        .notice-item.tarefa .notice-icon-box { background: #FFF7ED; color: #F97316; }
+        .notice-item.avaliacao .notice-icon-box { background: #EFF6FF; color: #3B82F6; }
+
+        .notice-info strong {
+            display: block;
+            font-size: 14px;
+            color: #1E293B;
+        }
+
+        .notice-info .subject-tag {
+            font-size: 12px;
+            color: #64748B;
+            margin: 2px 0;
+        }
+
+        .notice-info .due-date {
+            font-size: 11px;
+            color: #94A3B8;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.red { background: #FEF2F2; color: #EF4444; }
+        .status-badge.orange { background: #FFF7ED; color: #F97316; }
+        .status-badge.blue { background: #EFF6FF; color: #3B82F6; }
+
+        /* =======================
+           DISCIPLINAS DO PERÍODO
+        ======================= */
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .subject-card {
+            border: 1px solid #E2E8F0;
+            border-radius: 14px;
+            padding: 16px;
+            background: #FFF;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .subject-top {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .subject-icon {
+            width: 36px;
+            height: 36px;
+            background: #EEF2FF;
+            color: #4F46E5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .subject-details h4 {
+            color: #1E293B;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .subject-details .room {
+            color: #64748B;
+            font-size: 11px;
+            margin-top: 2px;
+        }
+
+        .subject-details .schedule {
+            color: #94A3B8;
+            font-size: 11px;
+        }
+
+        .subject-progress {
+            height: 4px;
+            background: #E2E8F0;
+            border-radius: 2px;
+            margin-top: 4px;
+            width: 100%;
+        }
+        .subject-progress-fill {
+            height: 100%;
+            background: #10B981;
+            border-radius: 2px;
+        }
+
+        .subject-footer {
+            font-size: 12px;
+            color: #475569;
+            border-top: 1px solid #F1F5F9;
+            padding-top: 8px;
+            margin-top: auto;
+        }
+
+        .text-center-link {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .text-center-link a {
+            color: #253D90;
+            font-size: 13px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* =======================
+           MINHAS ATIVIDADES E FÓRUM
+        ======================= */
+        .bottom-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .mini-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .mini-item {
+            display: flex;
+            gap: 12px;
+            font-size: 13px;
+        }
+
+        .mini-item i {
+            color: #64748B;
+            margin-top: 3px;
+        }
+
+        .mini-info strong {
+            color: #334155;
+            display: block;
+        }
+
+        .mini-info p {
+            color: #64748B;
+            font-size: 12px;
+        }
+
+        .mini-info span {
+            color: #94A3B8;
+            font-size: 11px;
+        }
+
+        .communities-box {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .community-tag {
+            background: #EFF6FF;
+            color: #253D90;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        /* =======================
+           COLUNA DIREITA
+        ======================= */
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .profile-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            border: 1px solid #E2E8F0;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #E2E8F0;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94A3B8;
+            font-size: 32px;
+        }
+
+        .profile-card h3 {
+            color: #1E293B;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .profile-card p {
+            color: #64748B;
+            font-size: 13px;
+            margin: 4px 0 12px;
+        }
+
+        .profile-card .sub-info {
+            font-size: 12px;
+            color: #94A3B8;
+            margin-bottom: 16px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            border: none;
+            background: #253D90;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .btn-primary:hover { background: #253D90; }
+
+        .quick-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .quick-btn {
+            width: 100%;
+            border: none;
+            background: #F8FAFC;
+            color: #334155;
+            padding: 10px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 13px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #E2E8F0;
+        }
+
+        .quick-btn i { color: #253D90; width: 16px; text-align: center; }
+        .quick-btn:hover { background: #F1F5F9; }
+
+        .integralization-box {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .donut-chart {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: conic-gradient(#10B981 0% 34%, #E2E8F0 34% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .donut-chart::before {
+            content: '34%';
+            position: absolute;
+            width: 52px;
+            height: 52px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: #1E293B;
+        }
+
+        .chart-label { color: #10B981; font-weight: 600; font-size: 14px; }
+
+        .stats-list {
+            margin-top: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 12px;
+            color: #475569;
+        }
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 2px 0;
+        }
+        .stats-row span:last-child { font-weight: 600; color: #1E293B; }
+
+        .help-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .help-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: #334155;
+            cursor: pointer;
+        }
+        .help-item i {
+            color: #253D90;
+            font-size: 16px;
+        }
+        .online-badge {
+            margin-left: auto;
+            width: 8px;
+            height: 8px;
+            background: #10B981;
+            border-radius: 50%;
+        }
+
+        .support-bar {
+            grid-column: 1 / -1;
+            background: #253D90;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+        .support-btn {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <header class="topbar">
+        <div class="topbar-left">
+            <i class="fas fa-bars" id="toggle-menu-top"></i>
+            <div class="topbar-logo">
+                <h2>UFSB - SIGAA</h2>
+                <span>Sistema Integrado de Gestão de Atividades Acadêmicas</span>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <i class="far fa-bell"></i>
+            <div class="topbar-btn"><i class="far fa-circle-question"></i> Ajuda</div>
+            <div class="topbar-btn" style="color: white; cursor: pointer;"
+                onclick="window.location.href='index.html'">
+                <i class="fas fa-arrow-right-from-bracket"></i> Sair
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard" id="dashboard-container">
+
+        <aside class="sidebar">
+            <div class="menu-item active">
+                <i class="fas fa-house"></i> <span>Início</span>
+            </div>
+
+            <div class="menu-title">Acadêmico</div>
+            <div class="menu-item"><i class="fas fa-graduation-cap"></i> <span>Ensino</span></div>
+            <div class="menu-item"><i class="fas fa-microscope"></i> <span>Pesquisa</span></div>
+            <div class="menu-item"><i class="fas fa-people-group"></i> <span>Extensão</span></div>
+            <div class="menu-item"><i class="fas fa-handshake-angle"></i> <span>Ações Associadas</span></div>
+
+            <div class="menu-title">Acompanhamento</div>
+            <div class="menu-item"><i class="fas fa-list-check"></i> <span>Minhas Atividades</span></div>
+            <div class="menu-item"><i class="fas fa-pen-to-square"></i> <span>Avaliações</span></div>
+            <div class="menu-item"><i class="fas fa-calendar-check"></i> <span>Frequência</span></div>
+            <div class="menu-item"><i class="fas fa-file-invoice"></i> <span>Histórico Escolar</span></div>
+
+            <div class="menu-title">Recursos</div>
+            <div class="menu-item"><i class="fas fa-book"></i> <span>Biblioteca</span></div>
+            <div class="menu-item"><i class="fas fa-briefcase"></i> <span>Estágio</span></div>
+            <div class="menu-item"><i class="fas fa-wallet"></i> <span>Bolsas</span></div>
+            <div class="menu-item"><i class="fas fa-envelope"></i> <span>Caixa Postal</span></div>
+
+            <div class="menu-item collapse-btn" id="btn-collapse">
+                <i class="fas fa-angles-left"></i> <span>Recolher menu</span>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <section class="welcome-card">
+                <h1>Olá, Evelin! 👋</h1>
+                <p>Curso: Mídia e Tecnologia &nbsp;|&nbsp; Período atual: <strong>2026.1</strong></p>
+            </section>
+
+            <section class="card">
+                <div class="card-header">
+                    <h3>Avisos e Prazos</h3>
+                    <a href="#">Ver todos</a>
+                </div>
+                <div class="notice-list">
+                    <div class="notice-item prazo">
+                        <div class="notice-left">
+                            <div class="notice-icon-box"><i class="far fa-calendar-days"></i></div>
+                            <div class="notice-info">
+                                <strong>Atividade 4 — Protótipo de Interface Multiplataforma</strong>
+                                <p class="subject-tag">Disciplina: Produção e Desenvolvimento Multiplataforma I</p>
+                                <p class="due-date">Entrega até 11/06/2026 às 14:00</p>
+                            </div>
+                        </div>
+                        <span class="status-badge red">Hoje</span>
+                    </div>
+
+                    <div class="notice-item tarefa">
+                        <div class="notice-left">
+                            <div class="notice-icon-box"><i class="fas fa-box-archive"></i></div>
+                            <div class="notice-info">
+                                <strong>Criação de Roteiro para Vídeo</strong>
+                                <p class="subject-tag">Disciplina: Influenciador Digital</p>
+                                <p class="due-date">Entrega até 11/06/2026 às 14:00</p>
+                            </div>
+                        </div>
+                        <span class="status-badge orange">Hoje</span>
+                    </div>
+
+                    <div class="notice-item avaliacao">
+                        <div class="notice-left">
+                            <div class="notice-icon-box"><i class="align-center fas fa-info"></i></div>
+                            <div class="notice-info">
+                                <strong>1ª Avaliação</strong>
+                                <p class="subject-tag">Disciplina: Teorias da Comunicação</p>
+                                <p class="due-date">Data: 22/06/2026 às 14:00</p>
+                            </div>
+                        </div>
+                        <span class="status-badge blue">8 dias</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card">
+                <div class="card-header">
+                    <h3>Disciplinas do Período (2026.1)</h3>
+                    <a href="#">Ver todas</a>
+                </div>
+                <div class="subjects-grid">
+                    <div class="subject-card">
+                        <div class="subject-top">
+                            <div class="subject-icon"><i class="fas fa-book-open"></i></div>
+                            <div class="subject-details">
+                                <h4>Cidadania e Redes Sociais</h4>
+                                <p class="room">Núcleo Pedagógico - CJA</p>
+                                <p class="schedule">2T123ABC</p>
+                            </div>
+                        </div>
+                        <div class="subject-progress"><div class="subject-progress-fill" style="width: 45%;"></div></div>
+                        <div class="subject-footer">Leitura para aula de 18.5</div>
+                    </div>
+
+                    <div class="subject-card">
+                        <div class="subject-top">
+                            <div class="subject-icon"><i class="fas fa-book-open"></i></div>
+                            <div class="subject-details">
+                                <h4>Influenciador Digital: Produção de Conteúdo (CCEX)</h4>
+                                <p class="room">Núcleo Pedagógico - CJA</p>
+                                <p class="schedule">4M123ABC</p>
+                            </div>
+                        </div>
+                        <div class="subject-progress"><div class="subject-progress-fill" style="width: 15%;"></div></div>
+                        <div class="subject-footer">Aulas às quartas 09:00</div>
+                    </div>
+
+                    <div class="subject-card">
+                        <div class="subject-top">
+                            <div class="subject-icon"><i class="fas fa-book-open"></i></div>
+                            <div class="subject-details">
+                                <h4>Produção e Desenvolvimento Multiplataforma I *Restrito*</h4>
+                                <p class="room">CJA - Sala 109b Laboratório</p>
+                                <p class="schedule">5T123ABC</p>
+                            </div>
+                        </div>
+                        <div class="subject-progress"><div class="subject-progress-fill" style="width: 80%;"></div></div>
+                        <div class="subject-footer">Próxima tarefa: 14/05</div>
+                    </div>
+
+                    <div class="subject-card">
+                        <div class="subject-top">
+                            <div class="subject-icon"><i class="fas fa-book-open"></i></div>
+                            <div class="subject-details">
+                                <h4>Teorias da Comunicação</h4>
+                                <p class="room">Núcleo Pedagógico - CJA</p>
+                                <p class="schedule">6M123ABC</p>
+                            </div>
+                        </div>
+                        <div class="subject-progress"><div class="subject-progress-fill" style="width: 30%;"></div></div>
+                        <div class="subject-footer">Avaliação em 22/06</div>
+                    </div>
+
+                    <div class="subject-card">
+                        <div class="subject-top">
+                            <div class="subject-icon"><i class="fas fa-book-open"></i></div>
+                            <div class="subject-details">
+                                <h4>Tópicos em Ética da Comunicação e da Informação</h4>
+                                <p class="room">Núcleo Pedagógico - CJA</p>
+                                <p class="schedule">3T123ABC</p>
+                            </div>
+                        </div>
+                        <div class="subject-progress"><div class="subject-progress-fill" style="width: 80%;"></div></div>
+                        <div class="subject-footer">Aulas às sextas 14:00</div>
+                    </div>
+
+                   
+                </div>
+
+                <div class="text-center-link">
+                    <a href="#">Ver turmas anteriores</a>
+                </div>
+            </section>
+
+
+            <div class="bottom-row">
+                <section class="card">
+                    <div class="card-header">
+                        <h3>Minhas Atividades</h3>
+                        <a href="#">Ver todas</a>
+                    </div>
+                    <div class="mini-list">
+                        <div class="mini-item">
+                            <i class="far fa-calendar"></i>
+                            <div class="mini-info">
+                                <strong>14/05 (Hoje) 14:00</strong>
+                                <p>Atividade 4 - Análise Crítica de...</p>
+                                <span>Produção e Desenvolvimento Multi...</span>
+                            </div>
+                        </div>
+                        <div class="mini-item">
+                            <i class="far fa-circle-question"></i>
+                            <div class="mini-info">
+                                <strong>22/05 (8 dias)</strong>
+                                <p>1ª Avaliação</p>
+                                <span>Teorias da Comunicação</span>
+                            </div>
+                        </div>
+                        <div class="mini-item">
+                            <i class="far fa-file-lines"></i>
+                            <div class="mini-info">
+                                <strong>05/06 (22 dias)</strong>
+                                <p>Relatório Final</p>
+                                <span>Influenciador Digital: Produção...</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <div class="card-header">
+                        <h3>Fórum do Curso</h3>
+                        <a href="#">Ver todos</a>
+                    </div>
+                    <div class="mini-list">
+                        <div class="mini-item">
+                            <i class="far fa-comments"></i>
+                            <div class="mini-info">
+                                <strong>Grupo de Whatsapp</strong>
+                                <p>Cordenador · 4 respostas · 20/04/2026</p>
+                            </div>
+                        </div>
+                        <div class="mini-item">
+                            <i class="far fa-comments"></i>
+                            <div class="mini-info">
+                                <strong>Oferta 2026</strong>
+                                <p>Professor · 0 respostas · 03/03/2026</p>
+                            </div>
+                        </div>
+                        <div class="mini-item">
+                            <i class="far fa-comments"></i>
+                            <div class="mini-info">
+                                <strong>Bom dia</strong>
+                                <p>Administrador · 1 resposta · 06/10/2023</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <section class="card">
+                <div class="card-header" style="margin-bottom: 10px;">
+                    <h3>Comunidades Virtuais</h3>
+                </div>
+                <p style="font-size: 13px; color: #64748B;">Participe das comunidades e espaços colaborativos do seu curso.</p>
+                <div class="communities-box">
+                    <div class="community-tag"><i class="far fa-comments"></i> Fórum de Discussão</div>
+                    <div class="community-tag"><i class="fas fa-diagram-project"></i> Projetos Colaborativos</div>
+                    <div class="community-tag"><i class="far fa-bell"></i> Avisos do Curso</div>
+                </div>
+                <div style="margin-top: 15px; text-align: right;">
+                    <a href="#" style="color: #253D90; font-size: 13px; text-decoration: none; font-weight: 600;">Ver todas as comunidades</a>
+                </div>
+            </section>
+        </main>
+
+       <aside class="right-column">
+        <div class="profile-card">
+            <div class="avatar"><i class="fas fa-user"></i></div>
+            <h3>Evelin Teixeira</h3>
+            <p>Mídia e Tecnologia</p>
+            <div class="sub-info">Matrícula: 123456789</div>
+            
+            <a href="perfil.html" style="text-decoration: none;">
+                <button class="btn-primary">Meu Perfil</button>
+            </a>
+        </div>
+    
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>Acesso rápido</h3>
+                </div>
+                <div class="quick-links">
+                    <button class="quick-btn"><i class="far fa-envelope"></i> Caixa Postal</button>
+                    <button class="quick-btn"><i class="far fa-user"></i> Meus Dados</button>
+                    <button class="quick-btn"><i class="far fa-file-lines"></i> Documentos</button>
+                    <button class="quick-btn"><i class="far fa-folder-open"></i> Solicitações</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>Integralizações</h3>
+                </div>
+                <div class="integralization-box">
+                    <div class="donut-chart"></div>
+                    <span class="chart-label">Integralizado</span>
+                </div>
+                <div class="stats-list">
+                    <div class="stats-row"><span>CH. Obrigatória Pendente</span><span>1110</span></div>
+                    <div class="stats-row"><span>CH. Optativa Pendente</span><span>210</span></div>
+                    <div class="stats-row"><span>CH. Total Currículo</span><span>2700</span></div>
+                    <div class="stats-row"><span>CH. Complementar/Extensão</span><span>450</span></div>
+                    <div class="stats-row"><span>Grupos de Optativas Pendentes</span><span>3</span></div>
+                </div>
+                <div style="margin-top: 15px; text-align: center;">
+                    <a href="#" style="color: #253D90; font-size: 13px; text-decoration: none; font-weight: 600;">Ver detalhes</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>Central de Ajuda</h3>
+                </div>
+                <p style="font-size: 12px; color: #64748B; margin-bottom: 14px;">Precisa de ajuda? Estamos aqui para te apoiar.</p>
+                <div class="help-list">
+                    <div class="help-item"><i class="far fa-comment-dots"></i> Abrir chamado <span style="font-size:11px; color:#94A3B8; margin-left:4px;">Fale com nossa equipe</span></div>
+                    <div class="help-item"><i class="far fa-circle-question"></i> Perguntas frequentes <span style="font-size:11px; color:#94A3B8; margin-left:4px;">Tire suas dúvidas</span></div>
+                    <div class="help-item"><i class="fas fa-photo-film"></i> Tutoriais <span style="font-size:11px; color:#94A3B8; margin-left:4px;">Guias e vídeos rápidos</span></div>
+                    <div class="help-item" style="margin-top: 10px; background: #F8FAFC; padding: 8px; border-radius: 8px;"><i class="far fa-comments"></i> <strong>Fale com a gente</strong> <span class="online-badge"></span></div>
+                </div>
+            </div>
+        </aside>
+
+        <footer class="support-bar">
+            <span>Está com dificuldades? Fale com a gente! Nosso time de suporte está pronto para ajudar.</span>
+            <button class="support-btn"><i class="far fa-comment-dots"></i> Abrir chamado</button>
+        </footer>
+    </div>
+
+    <script>
+        const dashboard = document.getElementById('dashboard-container');
+        const btnCollapse = document.getElementById('btn-collapse');
+        const btnToggleTop = document.getElementById('toggle-menu-top');
+
+        function toggleMenu() {
+            dashboard.classList.toggle('menu-collapsed');
+        }
+
+        btnCollapse.addEventListener('click', toggleMenu);
+
+        btnToggleTop.addEventListener('click', toggleMenu);
+    </script>
+
+</body>
+</html>

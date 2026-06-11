@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UFSB - SIGAA | Editar Perfil</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        }
+
+        body {
+            background: #F4F7FC;
+            color: #334155;
+        }
+
+        /* =======================
+           HEADER (Igual à Home)
+        ======================= */
+        .topbar {
+            height: 65px;
+            background: #253D90;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .topbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .topbar-logo h2 {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .topbar-logo span {
+            font-size: 12px;
+            opacity: 0.9;
+            border-left: 1px solid rgba(255,255,255,0.3);
+            padding-left: 12px;
+            display: inline-block;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 14px;
+        }
+
+        .topbar-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+        }
+
+        /* =======================
+           LAYOUT DA PÁGINA
+        ======================= */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Botão Voltar */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #253D90;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            width: fit-content;
+            transition: color 0.2s;
+        }
+        .back-link:hover {
+            color: #253D90;
+        }
+
+        /* CARD PRINCIPAL */
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: #F8FAFC;
+            padding: 20px 24px;
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        .card-header h3 {
+            color: #1E293B;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* Mensagem de aviso do topo */
+        .info-alert {
+            background: #EFF6FF;
+            border-left: 4px solid #253D90;
+            padding: 16px;
+            margin: 24px;
+            border-radius: 0 12px 12px 0;
+            font-size: 14px;
+            color: #253D90;
+            line-height: 1.5;
+        }
+
+        /* FORMULÁRIO */
+        .profile-form {
+            padding: 0 24px 24px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        /* Seção da Foto de Perfil */
+        .photo-section {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #F1F5F9;
+        }
+
+        .avatar-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #E2E8F0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94A3B8;
+            font-size: 40px;
+            border: 2px solid #CBD5E1;
+            flex-shrink: 0;
+        }
+
+        .photo-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .radio-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #475569;
+            cursor: pointer;
+        }
+
+        .radio-group input[type="radio"] {
+            accent-color: #253D90;
+            width: 16px;
+            height: 16px;
+        }
+
+        .file-input-wrapper {
+            margin-top: 4px;
+            margin-left: 24px;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            font-size: 13px;
+            color: #64748B;
+        }
+
+        /* Grupos de inputs de texto */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1E293B;
+        }
+
+        .form-group input[type="text"],
+        .form-group textarea,
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #CBD5E1;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #334155;
+            background: #FFF;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #253D90;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Subseção: Confirmar Dados */
+        .confirmation-zone {
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 10px;
+        }
+
+        .confirmation-zone h4 {
+            font-size: 14px;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .grid-inputs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        /* Ações/Botões do Rodapé */
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            border-top: 1px solid #E2E8F0;
+            padding-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-secondary {
+            background: #E2E8F0;
+            color: #475569;
+        }
+        .btn-secondary:hover {
+            background: #CBD5E1;
+        }
+
+        .btn-primary {
+            background: #10B981;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #059669;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <header class="topbar">
+        <div class="topbar-left">
+            <div class="topbar-logo">
+                <h2>UFSB - SIGAA</h2>
+                <span>Sistema Integrado de Gestão de Atividades Acadêmicas</span>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <a href="#" class="topbar-btn"><i class="fas fa-house"></i> Voltar ao Início</a>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <a href="telainicial.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> Voltar para o Dashboard
+        </a>
+
+        <main class="card">
+            <div class="card-header">
+                <h3>Editar Perfil</h3>
+            </div>
+
+            <div class="info-alert">
+                <i class="fas fa-circle-info"></i> &nbsp; Caro discente, a foto adicionada ao seu perfil será utilizada no Portal da Turma como parte de sua identificação para os outros alunos e professores.
+            </div>
+
+            <form class="profile-form">
+                
+                <div class="photo-section">
+                    <div class="avatar-preview">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="photo-options">
+                        <label class="radio-group">
+                            <input type="radio" name="photo_source" checked>
+                            <span>Enviar um arquivo do seu computador:</span>
+                        </label>
+                        <div class="file-input-wrapper">
+                            <input type="file" accept="image/*">
+                        </div>
+                        
+                        <label class="radio-group" style="margin-top: 6px;">
+                            <input type="radio" name="photo_source">
+                            <span>Tirar uma foto com sua webcam</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="bio">Descrição Pessoal:</label>
+                    <textarea id="bio" placeholder="Fale um pouco sobre você...">Me chamo Evelin Teixeira, sou aluna do curso de Mídia e tecnologia.</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="interests">Áreas de Interesse:</label>
+                    <input type="text" id="interests" value="Programação." placeholder="Ex: Design, Desenvolvimento Web, Fotografia...">
+                </div>
+
+                <div class="form-group">
+                    <label for="lattes">Currículo Lattes (Link):</label>
+                    <input type="text" id="lattes" placeholder="http://lattes.cnpq.br/...">
+                </div>
+
+                <div class="confirmation-zone">
+                    <h4>Confirme Seus Dados</h4>
+                    <div class="grid-inputs">
+                        <div class="form-group">
+                            <label for="cpf">CPF / Usuário:</label>
+                            <input type="text" id="cpf" value="evelinteixeira" readonly style="background: #F1F5F9; color: #64748B; cursor: not-allowed;">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Senha Atual:</label>
+                            <input type="password" id="password" placeholder="Digite sua senha para salvar">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-floppy-disk"></i> Gravar perfil</button>
+                </div>
+
+            </form>
+        </main>
+    </div>
+
+</body>
+</html>
